@@ -24,7 +24,9 @@ const getBrowser = async (): Promise<puppeteer.Browser> => {
       // Browser is closed
       queue.push(resolve);
       browserState = "opening";
-      browserInstance = await puppeteer.launch(config.puppeteer);
+      browserInstance = await puppeteer.launch({
+        executablePath: puppeteer.executablePath().replace('app.asar', 'app.asar.unpacked')
+      });
       browserState = "open";
 
       return executeQueuedRequests(browserInstance);
