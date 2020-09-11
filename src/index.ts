@@ -66,6 +66,8 @@ const convertSvg = async (inputSvg: Buffer|string, passedOptions: IOptions): Pro
   const page = (await browser.pages())[0];
 
   // ⚠️ Offline mode is enabled to prevent any HTTP requests over the network
+  // only on supported os
+  if (typeof page.setOfflineMode === 'function')
   await page.setOfflineMode(true);
 
   // Infer the file type from the file path if no type is provided
