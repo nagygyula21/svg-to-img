@@ -63,11 +63,12 @@ const convertSvg = async (inputSvg: Buffer|string, passedOptions: IOptions): Pro
   const svg = Buffer.isBuffer(inputSvg) ? (inputSvg as Buffer).toString("utf8") : inputSvg;
   const options = {...defaultOptions, ...passedOptions};
   const browser = await getBrowser();
-  const page = (await browser.pages())[0];
+  var page = (await browser.pages())[0];
 
+  if (typeof page === 'undefined')
+    page = await browser.newPage();
+  
   // ⚠️ Offline mode is enabled to prevent any HTTP requests over the network
-  // only on supported os
-  if (typeof page.setOfflineMode === 'function')
   await page.setOfflineMode(true);
 
   // Infer the file type from the file path if no type is provided
